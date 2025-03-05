@@ -2,34 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Artwork } from "../types/artwork";
 import FilterBar from "./FilterBar";
 import AddArtworkForm from "./AddArtworkForm";
+import { mockArtworks } from "../data/mockData"; // Імпортуємо mock-дані
 
-const mockArtworks: Artwork[] = [
-  {
-    id: "1",
-    title: "Starry Night",
-    artist: "Vincent van Gogh",
-    type: "painting",
-    price: 5000,
-    availability: true,
-  },
-  {
-    id: "2",
-    title: "The Persistence of Memory",
-    artist: "Salvador Dali",
-    type: "painting",
-    price: 7000,
-    availability: false,
-  },
-  {
-    id: "3",
-    title: "David",
-    artist: "Michelangelo",
-    type: "sculpture",
-    price: 12000,
-    availability: true,
-  },
-];
-
+// Ключ для локального сховища
 const STORAGE_KEY = "art_gallery_artworks";
 
 const ArtworkList: React.FC = () => {

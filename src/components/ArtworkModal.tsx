@@ -34,7 +34,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
 
   return (
     <>
-      <Modal show={true} onHide={onHide} centered>
+      <Modal show={true} onHide={onHide} centered backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{isEditing ? "Edit Artwork" : artwork.title}</Modal.Title>
         </Modal.Header>

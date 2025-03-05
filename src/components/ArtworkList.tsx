@@ -4,7 +4,7 @@ import { mockArtworks } from "../data/mockData";
 import { loadArtworks, saveArtworks } from "../utils/localStorage";
 import FilterBar from "./FilterBar";
 import AddArtworkModal from "./AddArtworkModal";
-import ArtworkModal from "./ArtworkModal"; // Новий компонент
+import ArtworkModal from "./ArtworkModal";
 import { Button, Card, Row, Col } from "react-bootstrap";
 
 const ArtworkList: React.FC = () => {
@@ -12,7 +12,7 @@ const ArtworkList: React.FC = () => {
     const savedArtworks = loadArtworks();
     return savedArtworks.length > 0 ? savedArtworks : mockArtworks;
   });
-
+  // localStorage.clear();
   useEffect(() => {
     saveArtworks(artworks);
   }, [artworks]);
@@ -62,8 +62,8 @@ const ArtworkList: React.FC = () => {
   });
 
   return (
-    <div className="p-4 bg-light">
-      <h2>Explore Our Collection</h2>
+    <div className="p-4 bg-light h-100">
+      <h2 className="fs-2 fw-bold">Explore Our Collection</h2>
 
       <div className="d-flex flex-wrap justify-content-start align-items-center">
         <FilterBar onFilterChange={handleFilterChange} />

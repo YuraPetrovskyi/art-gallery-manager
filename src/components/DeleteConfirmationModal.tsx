@@ -9,7 +9,7 @@ type DeleteConfirmationModalProps = {
 
 const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({ show, onHide, onConfirm }) => {
   return (
-    <Modal show={show} onHide={onHide} dialogClassName="modal-dialog-centered">
+    <Modal show={show} onHide={onHide} dialogClassName="modal-dialog-centered" backdrop="static">
       <Modal.Header closeButton>
         <Modal.Title>Confirm Deletion</Modal.Title>
       </Modal.Header>

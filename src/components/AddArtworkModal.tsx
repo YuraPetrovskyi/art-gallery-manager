@@ -52,7 +52,7 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
   };
 
   return (
-    <Modal show={show} onHide={onHide} centered>
+    <Modal show={show} onHide={onHide} centered backdrop="static">
       <Modal.Header closeButton>
         <Modal.Title>Add New Artwork</Modal.Title>
       </Modal.Header>

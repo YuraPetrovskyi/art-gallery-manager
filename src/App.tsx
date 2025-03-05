@@ -1,13 +1,19 @@
 import React from "react";
 import ArtworkList from "./components/ArtworkList";
+import AppNavbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 const App: React.FC = () => {
   return (
-    <div>
-      <h1>Art Gallery Manager</h1>
-      <ArtworkList />
+    <div className="d-flex flex-column min-vh-100">
+      <AppNavbar />
+      <div className="flex-grow-1">
+        <ArtworkList />
+      </div>
+      <Footer />
     </div>
   );
 };
+
 
 export default App;

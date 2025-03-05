@@ -4,8 +4,8 @@ import { mockArtworks } from "../data/mockData";
 import { loadArtworks, saveArtworks } from "../utils/localStorage";
 import FilterBar from "./FilterBar";
 import AddArtworkModal from "./AddArtworkModal";
-import DeleteConfirmationModal from "./DeleteConfirmationModal";
-import { Button } from "react-bootstrap";
+import ArtworkModal from "./ArtworkModal"; // Новий компонент
+import { Button, Card, Row, Col } from "react-bootstrap";
 
 const ArtworkList: React.FC = () => {
   const [artworks, setArtworks] = useState<Artwork[]>(() => {
@@ -20,9 +20,8 @@ const ArtworkList: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<string>("");
   const [artistFilter, setArtistFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [artworkToDelete, setArtworkToDelete] = useState<string | null>(null);
+  const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOrder(e.target.value);
@@ -37,17 +36,16 @@ const ArtworkList: React.FC = () => {
     setArtworks((prevArtworks) => [...prevArtworks, newArtwork]);
   };
 
-  const handleDeleteArtwork = (id: string) => {
-    setArtworkToDelete(id);
-    setShowDeleteModal(true);
+  const handleUpdateArtwork = (updatedArtwork: Artwork) => {
+    setArtworks((prevArtworks) =>
+      prevArtworks.map((art) => (art.id === updatedArtwork.id ? updatedArtwork : art))
+    );
+    setSelectedArtwork(updatedArtwork);
   };
-
-  const confirmDeleteArtwork = () => {
-    if (artworkToDelete) {
-      setArtworks((prevArtworks) => prevArtworks.filter((artwork) => artwork.id !== artworkToDelete));
-      setShowDeleteModal(false);
-      setArtworkToDelete(null);
-    }
+  
+  const handleDeleteArtwork = (id: string) => {
+    setArtworks((prevArtworks) => prevArtworks.filter((art) => art.id !== id));
+    setSelectedArtwork(null);
   };
 
   const filteredArtworks = artworks.filter((artwork) => {
@@ -64,38 +62,61 @@ const ArtworkList: React.FC = () => {
   });
 
   return (
-    <div>
-      <h2>Artwork Gallery</h2>
+    <div className="p-4 bg-light">
+      <h2>Explore Our Collection</h2>
+
+      <div className="d-flex flex-wrap justify-content-start align-items-center">
+        <FilterBar onFilterChange={handleFilterChange} />
+
+        <select className="p-2 rounded text-secondary text-start w-auto" onChange={handleSortChange} value={sortOrder}>
+          <option value="">Sort by</option>
+          <option value="asc">Price ↑</option>
+          <option value="desc">Price ↓</option>
+        </select>
+      </div>
+
+      <Row className="mt-3">
+        {sortedArtworks.map((artwork) => (
+          <Col key={artwork.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+            <Card onClick={() => setSelectedArtwork(artwork)} className="shadow-sm cursor-pointer p-3">
+              <Card.Img
+                className="rounded"
+                variant="top"
+                src="src/img/3.jpg" // Тимчасова заглушка для зображення
+                alt={artwork.title}
+                style={{ height: "200px", objectFit: "cover" }}
+              />
+              <Card.Body className="p-0 mt-3">
+                <div className="d-flex justify-content-between">
+                  {/* <Card.Title>{artwork.title}</Card.Title> */}
+                  <span className="fw-bold fs-5">{artwork.title}</span>
+
+                  <span className="fw-bold fs-5">${artwork.price}</span>
+                </div>
+                <div className="d-flex justify-content-between text-muted">
+                  <span>By: {artwork.artist}</span>
+                  <span>{artwork.availability ? "For Sale" : "Exhibition Only"}</span>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+
+      <AddArtworkModal show={showAddModal} onHide={() => setShowAddModal(false)} onAddArtwork={handleAddArtwork} />
+
+      {selectedArtwork && (
+        <ArtworkModal
+          artwork={selectedArtwork}
+          onHide={() => setSelectedArtwork(null)}
+          onUpdate={handleUpdateArtwork}
+          onDelete={handleDeleteArtwork}
+        />
+      )}
 
       <Button variant="dark" onClick={() => setShowAddModal(true)}>
         Add New Artwork
       </Button>
-
-      <FilterBar onFilterChange={handleFilterChange} />
-
-      <select onChange={handleSortChange} value={sortOrder}>
-        <option value="">Sort by</option>
-        <option value="asc">Price ↑</option>
-        <option value="desc">Price ↓</option>
-      </select>
-
-      <ul>
-        {sortedArtworks.map((artwork) => (
-          <li key={artwork.id}>
-            <strong>{artwork.title}</strong> by {artwork.artist} - ${artwork.price}{" "}
-            {artwork.availability ? "(For Sale)" : "(Exhibition Only)"}
-            <button onClick={() => handleDeleteArtwork(artwork.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-
-      <AddArtworkModal show={showAddModal} onHide={() => setShowAddModal(false)} onAddArtwork={handleAddArtwork} />
-
-      <DeleteConfirmationModal
-        show={showDeleteModal}
-        onHide={() => setShowDeleteModal(false)}
-        onConfirm={confirmDeleteArtwork}
-      />
     </div>
   );
 };

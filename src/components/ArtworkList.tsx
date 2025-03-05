@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Artwork } from "../types/artwork";
 import FilterBar from "./FilterBar";
+import AddArtworkForm from "./AddArtworkForm";
 
 const mockArtworks: Artwork[] = [
   {
@@ -30,6 +31,7 @@ const mockArtworks: Artwork[] = [
 ];
 
 const ArtworkList: React.FC = () => {
+  const [artworks, setArtworks] = useState<Artwork[]>(mockArtworks);
   const [sortOrder, setSortOrder] = useState<string>("");
   const [artistFilter, setArtistFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
@@ -43,8 +45,12 @@ const ArtworkList: React.FC = () => {
     setTypeFilter(type);
   };
 
+  const handleAddArtwork = (newArtwork: Artwork) => {
+    setArtworks((prevArtworks) => [...prevArtworks, newArtwork]);
+  };
+
   // Фільтруємо роботи
-  const filteredArtworks = mockArtworks.filter((artwork) => {
+  const filteredArtworks = artworks.filter((artwork) => {
     return (
       (artistFilter ? artwork.artist.toLowerCase().includes(artistFilter.toLowerCase()) : true) &&
       (typeFilter ? artwork.type === typeFilter : true)
@@ -61,10 +67,9 @@ const ArtworkList: React.FC = () => {
   return (
     <div>
       <h2>Artwork Gallery</h2>
-      
+
       <FilterBar onFilterChange={handleFilterChange} />
 
-      
       <select onChange={handleSortChange} value={sortOrder}>
         <option value="">Sort by</option>
         <option value="asc">Price ↑</option>
@@ -75,10 +80,13 @@ const ArtworkList: React.FC = () => {
         {sortedArtworks.map((artwork) => (
           <li key={artwork.id}>
             <strong>{artwork.title}</strong> by {artwork.artist} - ${artwork.price}{" "}
-            {artwork.availability ? "(Available)" : "(Sold Out)"}
+            {artwork.availability ? "(For Sale)" : "(Exhibition Only)"}
           </li>
         ))}
       </ul>
+
+      <AddArtworkForm onAddArtwork={handleAddArtwork} />
+
     </div>
   );
 };

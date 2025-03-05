@@ -49,6 +49,10 @@ const ArtworkList: React.FC = () => {
     setArtworks((prevArtworks) => [...prevArtworks, newArtwork]);
   };
 
+  const handleDeleteArtwork = (id: string) => {
+    setArtworks((prevArtworks) => prevArtworks.filter((artwork) => artwork.id !== id));
+  };
+
   // Фільтруємо роботи
   const filteredArtworks = artworks.filter((artwork) => {
     return (
@@ -81,10 +85,11 @@ const ArtworkList: React.FC = () => {
           <li key={artwork.id}>
             <strong>{artwork.title}</strong> by {artwork.artist} - ${artwork.price}{" "}
             {artwork.availability ? "(For Sale)" : "(Exhibition Only)"}
+            <button onClick={() => handleDeleteArtwork(artwork.id)}>Delete</button>
           </li>
         ))}
       </ul>
-
+      
       <AddArtworkForm onAddArtwork={handleAddArtwork} />
 
     </div>

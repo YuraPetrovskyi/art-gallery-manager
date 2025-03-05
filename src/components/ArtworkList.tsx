@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Artwork } from "../types/artwork";
+import { mockArtworks } from "../data/mockData";
+import { loadArtworks, saveArtworks } from "../utils/localStorage";
 import FilterBar from "./FilterBar";
 import AddArtworkForm from "./AddArtworkForm";
-import { mockArtworks } from "../data/mockData"; // Імпортуємо mock-дані
-
-// Ключ для локального сховища
-const STORAGE_KEY = "art_gallery_artworks";
 
 const ArtworkList: React.FC = () => {
   const [artworks, setArtworks] = useState<Artwork[]>(() => {
-    const savedArtworks = localStorage.getItem(STORAGE_KEY);
-    return savedArtworks ? JSON.parse(savedArtworks) : mockArtworks;
+    const savedArtworks = loadArtworks();
+    return savedArtworks.length > 0 ? savedArtworks : mockArtworks;
   });
+
+  useEffect(() => {
+    saveArtworks(artworks);
+  }, [artworks]);
 
   const [sortOrder, setSortOrder] = useState<string>("");
   const [artistFilter, setArtistFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(artworks));
-  }, [artworks]);
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOrder(e.target.value);

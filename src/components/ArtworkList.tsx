@@ -30,22 +30,28 @@ const mockArtworks: Artwork[] = [
 
 const ArtworkList: React.FC = () => {
   const [artworks, setArtworks] = useState<Artwork[]>(mockArtworks);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sortOrder, setSortOrder] = useState<string>("");
 
-  const handleSort = () => {
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const order = e.target.value;
+    setSortOrder(order);
+  
     const sortedArtworks = [...artworks].sort((a, b) =>
-      sortOrder === "asc" ? a.price - b.price : b.price - a.price
+      order === "asc" ? a.price - b.price : b.price - a.price
     );
+  
     setArtworks(sortedArtworks);
-    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
   return (
     <div>
       <h2>Artwork Gallery</h2>
-      <button onClick={handleSort}>
-        Sort by price ({sortOrder === "asc" ? "Lowest to Highest" : "Highest to Lowest"})
-      </button>
+      <label>Sort by: </label>
+      <select onChange={handleSortChange} value={sortOrder}>
+        <option value="">Select</option>
+        <option value="asc">Price: Low to High (↑)</option>
+        <option value="desc">Price: High to Low (↓)</option>
+      </select>
       <ul>
         {artworks.map((artwork) => (
           <li key={artwork.id}>

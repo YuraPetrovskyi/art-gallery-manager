@@ -3,8 +3,9 @@ import { Artwork } from "../types/artwork";
 import { mockArtworks } from "../data/mockData";
 import { loadArtworks, saveArtworks } from "../utils/localStorage";
 import FilterBar from "./FilterBar";
-import AddArtworkForm from "./AddArtworkForm";
+import AddArtworkModal from "./AddArtworkModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import { Button } from "react-bootstrap";
 
 const ArtworkList: React.FC = () => {
   const [artworks, setArtworks] = useState<Artwork[]>(() => {
@@ -19,7 +20,8 @@ const ArtworkList: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<string>("");
   const [artistFilter, setArtistFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [artworkToDelete, setArtworkToDelete] = useState<string | null>(null);
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -37,13 +39,13 @@ const ArtworkList: React.FC = () => {
 
   const handleDeleteArtwork = (id: string) => {
     setArtworkToDelete(id);
-    setShowModal(true);
+    setShowDeleteModal(true);
   };
 
   const confirmDeleteArtwork = () => {
     if (artworkToDelete) {
       setArtworks((prevArtworks) => prevArtworks.filter((artwork) => artwork.id !== artworkToDelete));
-      setShowModal(false);
+      setShowDeleteModal(false);
       setArtworkToDelete(null);
     }
   };
@@ -65,6 +67,10 @@ const ArtworkList: React.FC = () => {
     <div>
       <h2>Artwork Gallery</h2>
 
+      <Button variant="dark" onClick={() => setShowAddModal(true)}>
+        Add New Artwork
+      </Button>
+
       <FilterBar onFilterChange={handleFilterChange} />
 
       <select onChange={handleSortChange} value={sortOrder}>
@@ -83,11 +89,11 @@ const ArtworkList: React.FC = () => {
         ))}
       </ul>
 
-      <AddArtworkForm onAddArtwork={handleAddArtwork} />
+      <AddArtworkModal show={showAddModal} onHide={() => setShowAddModal(false)} onAddArtwork={handleAddArtwork} />
 
       <DeleteConfirmationModal
-        show={showModal}
-        onHide={() => setShowModal(false)}
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
         onConfirm={confirmDeleteArtwork}
       />
     </div>

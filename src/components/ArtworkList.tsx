@@ -4,6 +4,7 @@ import { mockArtworks } from "../data/mockData";
 import { loadArtworks, saveArtworks } from "../utils/localStorage";
 import FilterBar from "./FilterBar";
 import AddArtworkForm from "./AddArtworkForm";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
 const ArtworkList: React.FC = () => {
   const [artworks, setArtworks] = useState<Artwork[]>(() => {
@@ -18,6 +19,8 @@ const ArtworkList: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<string>("");
   const [artistFilter, setArtistFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [artworkToDelete, setArtworkToDelete] = useState<string | null>(null);
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOrder(e.target.value);
@@ -33,10 +36,18 @@ const ArtworkList: React.FC = () => {
   };
 
   const handleDeleteArtwork = (id: string) => {
-    setArtworks((prevArtworks) => prevArtworks.filter((artwork) => artwork.id !== id));
+    setArtworkToDelete(id);
+    setShowModal(true);
   };
 
-  // Фільтруємо роботи
+  const confirmDeleteArtwork = () => {
+    if (artworkToDelete) {
+      setArtworks((prevArtworks) => prevArtworks.filter((artwork) => artwork.id !== artworkToDelete));
+      setShowModal(false);
+      setArtworkToDelete(null);
+    }
+  };
+
   const filteredArtworks = artworks.filter((artwork) => {
     return (
       (artistFilter ? artwork.artist.toLowerCase().includes(artistFilter.toLowerCase()) : true) &&
@@ -44,7 +55,6 @@ const ArtworkList: React.FC = () => {
     );
   });
 
-  // Сортуємо після фільтрації
   const sortedArtworks = [...filteredArtworks].sort((a, b) => {
     if (sortOrder === "asc") return a.price - b.price;
     if (sortOrder === "desc") return b.price - a.price;
@@ -75,6 +85,11 @@ const ArtworkList: React.FC = () => {
 
       <AddArtworkForm onAddArtwork={handleAddArtwork} />
 
+      <DeleteConfirmationModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        onConfirm={confirmDeleteArtwork}
+      />
     </div>
   );
 };

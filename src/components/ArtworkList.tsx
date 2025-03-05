@@ -1,13 +1,5 @@
-import React from "react";
-
-type Artwork = {
-  id: string;
-  title: string;
-  artist: string;
-  type: string;
-  price: number;
-  availability: boolean;
-};
+import React, { useState } from "react";
+import { Artwork } from "../types/artwork";
 
 const mockArtworks: Artwork[] = [
   {
@@ -26,14 +18,36 @@ const mockArtworks: Artwork[] = [
     price: 7000,
     availability: false,
   },
+  {
+    id: "3",
+    title: "David",
+    artist: "Michelangelo",
+    type: "sculpture",
+    price: 12000,
+    availability: true,
+  },
 ];
 
 const ArtworkList: React.FC = () => {
+  const [artworks, setArtworks] = useState<Artwork[]>(mockArtworks);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
+  const handleSort = () => {
+    const sortedArtworks = [...artworks].sort((a, b) =>
+      sortOrder === "asc" ? a.price - b.price : b.price - a.price
+    );
+    setArtworks(sortedArtworks);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
+
   return (
     <div>
       <h2>Artwork Gallery</h2>
+      <button onClick={handleSort}>
+        Sort by price ({sortOrder === "asc" ? "Lowest to Highest" : "Highest to Lowest"})
+      </button>
       <ul>
-        {mockArtworks.map((artwork) => (
+        {artworks.map((artwork) => (
           <li key={artwork.id}>
             <strong>{artwork.title}</strong> by {artwork.artist} - ${artwork.price}{" "}
             {artwork.availability ? "(Available)" : "(Sold Out)"}

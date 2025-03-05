@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Artwork } from "../types/artwork";
+import FilterBar from "./FilterBar";
 
 const mockArtworks: Artwork[] = [
   {
@@ -29,31 +30,49 @@ const mockArtworks: Artwork[] = [
 ];
 
 const ArtworkList: React.FC = () => {
-  const [artworks, setArtworks] = useState<Artwork[]>(mockArtworks);
   const [sortOrder, setSortOrder] = useState<string>("");
+  const [artistFilter, setArtistFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState("");
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const order = e.target.value;
-    setSortOrder(order);
-  
-    const sortedArtworks = [...artworks].sort((a, b) =>
-      order === "asc" ? a.price - b.price : b.price - a.price
-    );
-  
-    setArtworks(sortedArtworks);
+    setSortOrder(e.target.value);
   };
+
+  const handleFilterChange = (artist: string, type: string) => {
+    setArtistFilter(artist);
+    setTypeFilter(type);
+  };
+
+  // Фільтруємо роботи
+  const filteredArtworks = mockArtworks.filter((artwork) => {
+    return (
+      (artistFilter ? artwork.artist.toLowerCase().includes(artistFilter.toLowerCase()) : true) &&
+      (typeFilter ? artwork.type === typeFilter : true)
+    );
+  });
+
+  // Сортуємо після фільтрації
+  const sortedArtworks = [...filteredArtworks].sort((a, b) => {
+    if (sortOrder === "asc") return a.price - b.price;
+    if (sortOrder === "desc") return b.price - a.price;
+    return 0;
+  });
 
   return (
     <div>
       <h2>Artwork Gallery</h2>
-      <label>Sort by: </label>
+      
+      <FilterBar onFilterChange={handleFilterChange} />
+
+      
       <select onChange={handleSortChange} value={sortOrder}>
-        <option value="">Select</option>
-        <option value="asc">Price: Low to High (↑)</option>
-        <option value="desc">Price: High to Low (↓)</option>
+        <option value="">Sort by</option>
+        <option value="asc">Price ↑</option>
+        <option value="desc">Price ↓</option>
       </select>
+
       <ul>
-        {artworks.map((artwork) => (
+        {sortedArtworks.map((artwork) => (
           <li key={artwork.id}>
             <strong>{artwork.title}</strong> by {artwork.artist} - ${artwork.price}{" "}
             {artwork.availability ? "(Available)" : "(Sold Out)"}

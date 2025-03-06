@@ -53,10 +53,10 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
 
   return (
     <Modal show={show} onHide={onHide} centered backdrop="static">
-      <Modal.Header closeButton>
-        <Modal.Title>Add New Artwork</Modal.Title>
+      <Modal.Header closeButton className="bg-white">
+        <Modal.Title className="fw-bold text-secondary">Add New Artwork</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="bg-light">
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Label>Title</Form.Label>
@@ -91,9 +91,15 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
 
           {error && <p style={{ color: "red" }}>{error}</p>}
 
-          <Button variant="dark" type="submit">
-            Add Artwork
-          </Button>
+          <div className="d-flex justify-content-between">
+            <Button variant="dark" type="submit">
+              Add Artwork
+            </Button>
+            <Button variant="secondary" onClick={onHide}>
+              Cancel
+            </Button>
+          </div>
+          
         </Form>
       </Modal.Body>
     </Modal>

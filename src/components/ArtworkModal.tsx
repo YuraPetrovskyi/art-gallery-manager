@@ -36,9 +36,9 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
     <>
       <Modal show={true} onHide={onHide} centered backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{isEditing ? "Edit Artwork" : artwork.title}</Modal.Title>
+          <Modal.Title className="fw-bold text-secondary">{isEditing ? "Edit Artwork" : artwork.title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="bg-light">
           <img
             src="src/img/3.jpg"
             alt={artwork.title}
@@ -89,16 +89,16 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
         </Modal.Body>
         <Modal.Footer>
           {isEditing ? (
-            <>
-              <Button variant="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
-              <Button variant="primary" onClick={handleSaveChanges}>Save Changes</Button>
-            </>
+            <div className="d-flex w-100 justify-content-between">
+              <Button className="w-50" variant="dark" onClick={handleSaveChanges}>Save Changes</Button>
+              <Button className="w-25" variant="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
+            </div>
           ) : (
-            <>
-              <Button variant="warning" onClick={() => setIsEditing(true)}>Edit</Button>
-              <Button variant="danger" onClick={() => setShowDeleteModal(true)}>Delete</Button>
-              <Button variant="secondary" onClick={onHide}>Close</Button>
-            </>
+            <div className="d-flex w-100 justify-content-between">
+              <Button className="w-25" variant="secondary" onClick={() => setIsEditing(true)}>Edit</Button>
+              <Button className="w-25" variant="secondary" onClick={() => setShowDeleteModal(true)}>Remove</Button>
+              <Button className="w-25" variant="dark" onClick={onHide}>Close</Button>
+            </div>
           )}
         </Modal.Footer>
       </Modal>
@@ -111,6 +111,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
           setShowDeleteModal(false);
           onHide();
         }}
+        artworkTitle={artwork.title}
       />
     </>
   );

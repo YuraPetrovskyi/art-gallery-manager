@@ -93,9 +93,9 @@ const ArtworkList: React.FC = () => {
 
                   <span className="fw-bold fs-5">${artwork.price}</span>
                 </div>
-                <div className="d-flex justify-content-between text-muted">
+                <div className="d-flex justify-content-between text-muted" style={{fontSize: "0.7rem"}}>
                   <span className="text-truncate">By: {artwork.artist}</span>
-                  <span className="text-center">{artwork.availability ? "For Sale" : "Exhibition Only"}</span>
+                  <span className="text-end">{artwork.availability ? "For Sale" : "Exhibition Only"}</span>
                 </div>
               </Card.Body>
             </Card>

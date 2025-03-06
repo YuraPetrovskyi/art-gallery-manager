@@ -36,3 +36,37 @@ body {
   word-break: break-word; /* Дозволяє ламати довге слово */
   white-space: normal; /* Дозволяє переносити рядки */
 }
+
+input {
+  border: 1px solid #bfbfc0 !important; /* Bootstrap-сірий колір */
+  box-shadow: none !important; /* Видаляє будь-які тіні */
+  outline: none !important; /* Видаляє синій контур при фокусі */
+}
+
+input:focus {
+  border-color: #494a4a !important; /* Трішки темніший сірий при фокусі */
+}
+
+select {
+  border: 1px solid #bfbfc0 !important; /* Сірий бордер Bootstrap */
+  box-shadow: none !important; /* Видаляє внутрішню тінь */
+  outline: none !important; /* Видаляє синій контур при фокусі */
+  /* appearance: none;  Видаляє стандартний стиль браузера */
+  background-color: white; /* Фон залишається білим */
+  padding: 8px; /* Робимо текст не притиснутим */
+}
+
+select:focus {
+  border-color: #494a4a !important; /* Темніший сірий при фокусі */
+}
+
+
+/* Зміна фону опцій при наведенні (не підтримується у всіх браузерах) */
+select option:hover {
+  background: #e9ecef !important; /* Світло-сірий фон при наведенні */
+}
+
+/* Опція, яка вибрана */
+select option:checked {
+  background: #e5e5e6 !important; /* Світло-сірий фон для вибраного елемента */
+}

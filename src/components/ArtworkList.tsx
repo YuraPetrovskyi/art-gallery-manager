@@ -89,13 +89,13 @@ const ArtworkList: React.FC = () => {
               <Card.Body className="p-0 mt-3">
                 <div className="d-flex justify-content-between">
                   {/* <Card.Title>{artwork.title}</Card.Title> */}
-                  <span className="fw-bold fs-5">{artwork.title}</span>
+                  <span className="fw-bold fs-5 text-truncate">{artwork.title}</span>
 
                   <span className="fw-bold fs-5">${artwork.price}</span>
                 </div>
                 <div className="d-flex justify-content-between text-muted">
-                  <span>By: {artwork.artist}</span>
-                  <span>{artwork.availability ? "For Sale" : "Exhibition Only"}</span>
+                  <span className="text-truncate">By: {artwork.artist}</span>
+                  <span className="text-center">{artwork.availability ? "For Sale" : "Exhibition Only"}</span>
                 </div>
               </Card.Body>
             </Card>

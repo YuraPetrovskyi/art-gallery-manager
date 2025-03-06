@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
+  
+  // The  tsconfig.json  file is used to configure the TypeScript compiler. 
+  // The  compilerOptions  object specifies the target version of JavaScript, 
+  // the module system, the output directory, the root directory of the project, 
+  // and the strict mode. 
+  // The  include  property specifies the directories to include in the compilation process, 
+  // and the  exclude  property specifies the directories to exclude.   

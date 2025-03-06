@@ -23,10 +23,6 @@ const ArtworkList: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
 
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortOrder(e.target.value);
-  };
-
   const handleFilterChange = (artist: string, type: string) => {
     setArtistFilter(artist);
     setTypeFilter(type);
@@ -64,16 +60,8 @@ const ArtworkList: React.FC = () => {
   return (
     <div className="p-4 bg-light h-100">
       <h2 className="fs-2 fw-bold">Explore Our Collection</h2>
-
-      <div className="d-flex flex-wrap justify-content-start align-items-center">
-        <FilterBar onFilterChange={handleFilterChange} />
-
-        <select className="p-2 rounded text-secondary text-start w-auto" onChange={handleSortChange} value={sortOrder}>
-          <option value="">Sort by</option>
-          <option value="asc">Price ↑</option>
-          <option value="desc">Price ↓</option>
-        </select>
-      </div>
+      
+      <FilterBar onFilterChange={handleFilterChange} onSortChange={setSortOrder} />
 
       <Row className="mt-3">
         {sortedArtworks.map((artwork) => (

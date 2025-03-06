@@ -1,7 +1,7 @@
-import express from "express";
+import { Router } from "express";
 import { getArtworks, getArtworkById, addArtwork, deleteArtwork } from "../controllers/artworksController";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getArtworks);
 router.get("/:id", getArtworkById);

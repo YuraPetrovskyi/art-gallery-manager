@@ -6,14 +6,15 @@ type FilterBarProps = {
 
 const FilterBar: React.FC<FilterBarProps> = ({ onFilterChange }) => {
   const [artistInput, setArtistInput] = useState("");
+  const [typeInput, setTypeInput] = useState("");
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      onFilterChange(artistInput, "");
-    }, 300); // 300 мс затримки
+      onFilterChange(artistInput, typeInput);
+    }, 0); // 300 мс затримки
 
     return () => clearTimeout(timer);
-  }, [artistInput, onFilterChange]);
+  }, [artistInput, typeInput, onFilterChange]);
 
   return (
     <div>
@@ -27,7 +28,11 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFilterChange }) => {
       />
 
       {/* Випадаючий список для фільтрування за типом */}
-      <select onChange={(e) => onFilterChange("", e.target.value)} className="p-2 rounded text-secondary text-start mx-4 w-auto">
+      <select 
+        value={typeInput}
+        onChange={(e) => setTypeInput(e.target.value)} 
+        className="p-2 rounded text-secondary text-start mx-4 w-auto"
+      >
         <option value="">All types</option>
         <option value="painting">Painting</option>
         <option value="sculpture">Sculpture</option>

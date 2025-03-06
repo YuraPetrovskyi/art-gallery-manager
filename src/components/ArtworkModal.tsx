@@ -36,7 +36,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
     <>
       <Modal show={true} onHide={onHide} centered backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title className="fw-bold text-secondary">{isEditing ? "Edit Artwork" : artwork.title}</Modal.Title>
+          <Modal.Title className="fw-bold text-secondary text-break">{isEditing ? "Edit Artwork" : artwork.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body className="bg-light">
           <img
@@ -80,9 +80,9 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
             </Form>
           ) : (
             <>
-              <p><strong>Artist:</strong> {artwork.artist}</p>
-              <p><strong>Type:</strong> {artwork.type}</p>
-              <p><strong>Price:</strong> ${artwork.price}</p>
+              <p className="text-break"><strong>Artist:</strong> {artwork.artist}</p>
+              <p className="text-break"><strong>Type:</strong> {artwork.type}</p>
+              <p ><strong>Price:</strong> ${artwork.price}</p>
               <p><strong>Availability:</strong> {artwork.availability ? "For Sale" : "Exhibition Only"}</p>
             </>
           )}
@@ -91,13 +91,13 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
           {isEditing ? (
             <div className="d-flex w-100 justify-content-between">
               <Button className="w-50" variant="dark" onClick={handleSaveChanges}>Save Changes</Button>
-              <Button className="w-25" variant="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button className="w-auto" variant="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
             </div>
           ) : (
             <div className="d-flex w-100 justify-content-between">
-              <Button className="w-25" variant="secondary" onClick={() => setIsEditing(true)}>Edit</Button>
-              <Button className="w-25" variant="secondary" onClick={() => setShowDeleteModal(true)}>Remove</Button>
-              <Button className="w-25" variant="dark" onClick={onHide}>Close</Button>
+              <Button className="w-auto" variant="secondary" onClick={() => setIsEditing(true)}>Edit</Button>
+              <Button className="w-auto" variant="secondary" onClick={() => setShowDeleteModal(true)}>Remove</Button>
+              <Button className="w-auto" variant="dark" onClick={onHide}>Close</Button>
             </div>
           )}
         </Modal.Footer>

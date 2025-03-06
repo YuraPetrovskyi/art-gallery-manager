@@ -29,3 +29,10 @@ body {
 .card:hover {
   transform: scale(1.05);
 }
+
+.text-break {
+  word-wrap: break-word; /* Дозволяє переносити довгі слова */
+  overflow-wrap: break-word; /* Альтернативний варіант для деяких браузерів */
+  word-break: break-word; /* Дозволяє ламати довге слово */
+  white-space: normal; /* Дозволяє переносити рядки */
+}

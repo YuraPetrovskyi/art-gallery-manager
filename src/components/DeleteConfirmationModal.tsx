@@ -14,7 +14,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({ show,
       <Modal.Header closeButton className="bg-light border-top shadow-lg">
         <Modal.Title className="fw-bold">Confirm Removing</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="text-break">
         {artworkTitle ? (
           <>Are you sure you want to remove <strong>{artworkTitle}</strong>?</>
         ) : (

@@ -8,3 +8,11 @@ CREATE TABLE artworks (
   price NUMERIC(10,2) NOT NULL CHECK (price > 0),
   availability BOOLEAN NOT NULL DEFAULT true
 );
+
+INSERT INTO artworks (title, artist, type, price, availability) VALUES
+('Starry Night', 'Vincent van Gogh', 'painting', 1000000, true),
+('The Thinker', 'Auguste Rodin', 'sculpture', 500000, false),
+('Mona Lisa', 'Leonardo da Vinci', 'painting', 7500000, true),
+('The Persistence of Memory', 'Salvador Dali', 'painting', 1200000, false),
+('The Scream', 'Edvard Munch', 'painting', 950000, true),
+('David', 'Michelangelo', 'sculpture', 3000000, false);

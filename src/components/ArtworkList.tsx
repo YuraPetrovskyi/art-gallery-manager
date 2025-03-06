@@ -78,7 +78,10 @@ const ArtworkList: React.FC = () => {
       <Row className="mt-3">
         {sortedArtworks.map((artwork) => (
           <Col key={artwork.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
-            <Card onClick={() => setSelectedArtwork(artwork)} className="shadow-sm cursor-pointer p-3">
+            <Card 
+              onClick={() => setSelectedArtwork(artwork)} 
+              className="shadow-sm cursor-pointer p-3 h-100 d-flex flex-column"
+            >
               <Card.Img
                 className="rounded"
                 variant="top"
@@ -86,7 +89,7 @@ const ArtworkList: React.FC = () => {
                 alt={artwork.title}
                 style={{ height: "200px", objectFit: "cover" }}
               />
-              <Card.Body className="p-0 mt-3">
+              <Card.Body className="p-0 mt-3 d-flex flex-column flex-grow-1">
                 <div className="d-flex justify-content-between">
                   {/* <Card.Title>{artwork.title}</Card.Title> */}
                   <span className="fw-bold fs-5 text-truncate">{artwork.title}</span>
@@ -95,7 +98,7 @@ const ArtworkList: React.FC = () => {
                 </div>
                 <div className="d-flex justify-content-between text-muted" style={{fontSize: "0.7rem"}}>
                   <span className="text-truncate">By: {artwork.artist}</span>
-                  <span className="text-end">{artwork.availability ? "For Sale" : "Exhibition Only"}</span>
+                  <span className="text-end text-truncate">{artwork.availability ? "For Sale" : "Exhibition Only"}</span>
                 </div>
               </Card.Body>
             </Card>

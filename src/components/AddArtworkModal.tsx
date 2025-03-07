@@ -77,10 +77,11 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
       setLoading(true);
       const response = await axios.post(API_URL, newArtwork);
       onAddArtwork(response.data);
+      setError(null);
       onHide();
     } catch (error) {
       console.error("Error adding artwork:", error);
-      alert("Failed to add artwork.");
+      setError("Failed to add artwork.");
     } finally {
       setLoading(false);
     }
@@ -116,7 +117,8 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
             <Form.Control 
               type="number" 
               value={price}
-              onChange={(e) => setPrice(e.target.value)} />
+              onChange={(e) => setPrice(Math.floor(Number(e.target.value)).toString())}
+            />
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -127,7 +129,7 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
             </Form.Select>
           </Form.Group>
 
-          {error && <p className="text-danger">{error}</p>}
+          {error && <p className="text-center  text-danger">{error}</p>}
 
           <div className="d-flex justify-content-between">
             <Button variant="dark" type="submit" disabled={loading}>

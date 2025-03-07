@@ -1,31 +1,56 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Artwork } from "../types/artwork";
-import { mockArtworks } from "../data/mockData";
-import { loadArtworks, saveArtworks } from "../utils/localStorage";
+// import { mockArtworks } from "../data/mockData";
+// import { loadArtworks, saveArtworks } from "../utils/localStorage";
 import FilterBar from "./FilterBar";
 import AddArtworkModal from "./AddArtworkModal";
 import ArtworkModal from "./ArtworkModal";
-import { Button, Card, Row, Col } from "react-bootstrap";
+import { Button, Card, Row, Col, Spinner } from "react-bootstrap";
+
+const API_URL = "http://localhost:8000/api/artworks"; // Адреса бекенду
 
 const ArtworkList: React.FC = () => {
-  const [artworks, setArtworks] = useState<Artwork[]>(() => {
-    const savedArtworks = loadArtworks();
-    return savedArtworks.length > 0 ? savedArtworks : mockArtworks;
-  });
+  // const [artworks, setArtworks] = useState<Artwork[]>(() => {
+  //   const savedArtworks = loadArtworks();
+  //   return savedArtworks.length > 0 ? savedArtworks : mockArtworks;
+  // });
   // localStorage.clear();
+
+  // useEffect(() => {
+  //   saveArtworks(artworks);
+  // }, [artworks]);
+
+  const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
+
   useEffect(() => {
-    saveArtworks(artworks);
-  }, [artworks]);
+    axios.get(API_URL)
+      .then((response) => {
+        setArtworks(response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching artworks:", err);
+        setError("Failed to load artworks.");
+        setLoading(false);
+      });
+  }, []);
 
   const [sortOrder, setSortOrder] = useState<string>("");
   const [artistFilter, setArtistFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
 
   const handleFilterChange = (artist: string, type: string) => {
     setArtistFilter(artist);
     setTypeFilter(type);
+  };
+
+  const handleSortChange = (sortOrder: string) => {
+    setSortOrder(sortOrder);
   };
 
   const handleAddArtwork = (newArtwork: Artwork) => {
@@ -57,11 +82,14 @@ const ArtworkList: React.FC = () => {
     return 0;
   });
 
+  if (loading) return <Spinner animation="border" className="d-block mx-auto mt-5" />;
+  if (error) return <p className="text-danger">{error}</p>;
+
   return (
     <div className="p-4 bg-light h-100">
       <h2 className="fs-2 fw-bold">Explore Our Collection</h2>
       
-      <FilterBar onFilterChange={handleFilterChange} onSortChange={setSortOrder} />
+      <FilterBar onFilterChange={handleFilterChange} onSortChange={handleSortChange} />
 
       <Row className="mt-3">
         {sortedArtworks.map((artwork) => (
@@ -79,10 +107,8 @@ const ArtworkList: React.FC = () => {
               />
               <Card.Body className="p-0 mt-3 d-flex flex-column flex-grow-1">
                 <div className="d-flex justify-content-between">
-                  {/* <Card.Title>{artwork.title}</Card.Title> */}
                   <span className="fw-bold fs-5 text-truncate">{artwork.title}</span>
-
-                  <span className="fw-bold fs-5">${artwork.price}</span>
+                  <span className="fw-bold fs-5">${Math.floor(artwork.price)}</span>
                 </div>
                 <div className="d-flex justify-content-between text-muted" style={{fontSize: "0.7rem"}}>
                   <span className="text-truncate">By: {artwork.artist}</span>

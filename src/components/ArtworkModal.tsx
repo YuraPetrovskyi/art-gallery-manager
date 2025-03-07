@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import axios from "axios";
+import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { Artwork } from "../types/artwork";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+
+const API_URL = "http://localhost:8000/api/artworks";
 
 type ArtworkModalProps = {
   artwork: Artwork;
@@ -17,9 +20,39 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
   const [type, setType] = useState(artwork.type);
   const [price, setPrice] = useState(artwork.price.toString());
   const [availability, setAvailability] = useState(artwork.availability);
-  const [showDeleteModal, setShowDeleteModal] = useState(false); 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSaveChanges = () => {
+  // const handleSaveChanges = () => {
+  //   const updatedArtwork: Artwork = {
+  //     ...artwork,
+  //     title,
+  //     artist,
+  //     type,
+  //     price: parseFloat(price),
+  //     availability,
+  //   };
+  //   onUpdate(updatedArtwork);
+  //   setIsEditing(false);
+  // };
+
+  const handleSaveChanges = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!title.trim() || title.length > 99) {
+      setError("Title is required (max 99 characters).");
+      return;
+    }
+    if (!artist.trim()) {
+      setError("Artist name is required.");
+      return;
+    }
+    if (!price || isNaN(Number(price)) || Number(price) <= 0) {
+      setError("Price must be a positive number.");
+      return;
+    }
+
     const updatedArtwork: Artwork = {
       ...artwork,
       title,
@@ -28,8 +61,19 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
       price: parseFloat(price),
       availability,
     };
-    onUpdate(updatedArtwork);
-    setIsEditing(false);
+
+    try {
+      setLoading(true);
+      await axios.put(`${API_URL}/${artwork.id}`, updatedArtwork);
+      onUpdate(updatedArtwork);
+      setIsEditing(false);
+      setError(null);
+    } catch (error) {
+      console.error("Error updating artwork:", error);
+      setError("Failed to update artwork.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -67,7 +111,11 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
 
               <Form.Group className="mb-3">
                 <Form.Label>Price</Form.Label>
-                <Form.Control type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+                <Form.Control 
+                  type="number"
+                  value={price}
+                  onChange={(e) => setPrice(Math.floor(Number(e.target.value)).toString())} 
+                />
               </Form.Group>
 
               <Form.Group className="mb-3">
@@ -87,11 +135,16 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
             </>
           )}
         </Modal.Body>
+
+        {error && <p className="text-danger text-center">{error}</p>}
+
         <Modal.Footer>
           {isEditing ? (
             <div className="d-flex w-100 justify-content-between">
-              <Button className="w-50" variant="dark" onClick={handleSaveChanges}>Save Changes</Button>
-              <Button className="w-auto" variant="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button className="w-50" variant="dark" onClick={handleSaveChanges} disabled={loading}>
+                {loading ? <Spinner animation="border" size="sm" /> : "Save Changes"}
+              </Button>
+              <Button className="w-25" variant="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
             </div>
           ) : (
             <div className="d-flex w-100 justify-content-between">

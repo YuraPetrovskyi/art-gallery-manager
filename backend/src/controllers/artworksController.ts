@@ -55,3 +55,30 @@ export const deleteArtwork = async (req: Request, res: Response): Promise<void> 
     res.status(500).json({ error: "Database error" });
   }
 };
+
+export const updateArtwork = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const { title, artist, type, price, availability } = req.body;
+
+  if (!title || !artist || !type || !price) {
+    res.status(400).json({ error: "Missing required fields" });
+    return;
+  }
+
+  try {
+    const { rows } = await pool.query(
+      "UPDATE artworks SET title = $1, artist = $2, type = $3, price = $4, availability = $5 WHERE id = $6 RETURNING *",
+      [title, artist, type, price, availability, id]
+    );
+
+    if (rows.length === 0) {
+      res.status(404).json({ error: "Artwork not found" });
+      return;
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
+};

@@ -76,6 +76,21 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
     }
   };
 
+  const handleDeleteArtwork = async () => {
+    try {
+      setLoading(true);
+      await axios.delete(`${API_URL}/${artwork.id}`); // Видаляємо з бази
+      onDelete(artwork.id); // Видаляємо з локального стану
+      setShowDeleteModal(false);
+      onHide(); // Закриваємо модальне вікно після видалення
+    } catch (error) {
+      console.error("Error deleting artwork:", error);
+      alert("Failed to delete artwork.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Modal show={true} onHide={onHide} centered backdrop="static">
@@ -159,12 +174,9 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
       <DeleteConfirmationModal
         show={showDeleteModal}
         onHide={() => setShowDeleteModal(false)}
-        onConfirm={() => {
-          onDelete(artwork.id);
-          setShowDeleteModal(false);
-          onHide();
-        }}
+        onConfirm={handleDeleteArtwork}
         artworkTitle={artwork.title}
+        loading={loading}
       />
     </>
   );

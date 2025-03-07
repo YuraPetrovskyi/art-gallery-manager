@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import axios from "axios";
+import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { Artwork } from "../types/artwork";
+
+const API_URL = "http://localhost:8000/api/artworks";
 
 type AddArtworkModalProps = {
   show: boolean;
@@ -14,11 +17,47 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
   const [type, setType] = useState("painting");
   const [price, setPrice] = useState("");
   const [availability, setAvailability] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
 
+  //   if (!title.trim() || title.length > 99) {
+  //     setError("Title is required (max 99 characters).");
+  //     return;
+  //   }
+  //   if (!artist.trim()) {
+  //     setError("Artist name is required.");
+  //     return;
+  //   }
+  //   if (!price || isNaN(Number(price)) || Number(price) <= 0) {
+  //     setError("Price must be a positive number.");
+  //     return;
+  //   }
+
+  //   const newArtwork: Artwork = {
+  //     id: Math.random().toString(36).substr(2, 9),
+  //     title,
+  //     artist,
+  //     type,
+  //     price: parseFloat(price),
+  //     availability,
+  //   };
+
+  //   onAddArtwork(newArtwork);
+  //   setTitle("");
+  //   setArtist("");
+  //   setType("painting");
+  //   setPrice("");
+  //   setAvailability(true);
+  //   setError(null);
+  //   onHide();
+  // };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // if (!title || !artist || !price) return alert("Please fill all required fields.");
     if (!title.trim() || title.length > 99) {
       setError("Title is required (max 99 characters).");
       return;
@@ -32,23 +71,19 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
       return;
     }
 
-    const newArtwork: Artwork = {
-      id: Math.random().toString(36).substr(2, 9),
-      title,
-      artist,
-      type,
-      price: parseFloat(price),
-      availability,
-    };
+    const newArtwork = { title, artist, type, price: Number(price), availability };
 
-    onAddArtwork(newArtwork);
-    setTitle("");
-    setArtist("");
-    setType("painting");
-    setPrice("");
-    setAvailability(true);
-    setError(null);
-    onHide();
+    try {
+      setLoading(true);
+      const response = await axios.post(API_URL, newArtwork);
+      onAddArtwork(response.data);
+      onHide();
+    } catch (error) {
+      console.error("Error adding artwork:", error);
+      alert("Failed to add artwork.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -78,7 +113,10 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
 
           <Form.Group className="mb-3">
             <Form.Label>Price</Form.Label>
-            <Form.Control type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+            <Form.Control 
+              type="number" 
+              value={price}
+              onChange={(e) => setPrice(e.target.value)} />
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -89,11 +127,11 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
             </Form.Select>
           </Form.Group>
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p className="text-danger">{error}</p>}
 
           <div className="d-flex justify-content-between">
-            <Button variant="dark" type="submit">
-              Add Artwork
+            <Button variant="dark" type="submit" disabled={loading}>
+              {loading ? <Spinner animation="border" size="sm" /> : "Add Artwork"}
             </Button>
             <Button variant="secondary" onClick={onHide}>
               Cancel

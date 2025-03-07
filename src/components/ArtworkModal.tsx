@@ -159,7 +159,13 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
               <Button className="w-50" variant="dark" onClick={handleSaveChanges} disabled={loading}>
                 {loading ? <Spinner animation="border" size="sm" /> : "Save Changes"}
               </Button>
-              <Button className="w-25" variant="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button 
+                className="w-25" variant="secondary" onClick={() => {
+                  setIsEditing(false);
+                  setError(null);
+              }}>
+                Cancel
+              </Button>
             </div>
           ) : (
             <div className="d-flex w-100 justify-content-between">

@@ -135,7 +135,10 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
             <Button variant="dark" type="submit" disabled={loading}>
               {loading ? <Spinner animation="border" size="sm" /> : "Add Artwork"}
             </Button>
-            <Button variant="secondary" onClick={onHide}>
+            <Button variant="secondary" onClick={() => {
+              onHide();
+              setError(null);
+            }}>
               Cancel
             </Button>
           </div>

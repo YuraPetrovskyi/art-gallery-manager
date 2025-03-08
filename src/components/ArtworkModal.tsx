@@ -169,10 +169,10 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
             </div>
           ) : (
             <div className="d-flex w-100 justify-content-between">
-              <Button className="w-auto" variant="secondary" onClick={() => setIsEditing(true)}>Edit</Button>
-              <Button className="w-auto" variant="secondary" onClick={() => setShowDeleteModal(true)}>Remove</Button>
-              <Button className="w-auto" variant="dark" onClick={onHide}>Close</Button>
-            </div>
+              <Button className="w-25" variant="secondary"  onClick={() => setIsEditing(true)}>Edit</Button>
+              <Button className="w-25 p-0" variant="secondary" onClick={() => setShowDeleteModal(true)}>Remove</Button>
+              <Button className="w-25" variant="dark" onClick={onHide}>Close</Button>
+            </div>            
           )}
         </Modal.Footer>
       </Modal>

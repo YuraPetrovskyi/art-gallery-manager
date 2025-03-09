@@ -109,7 +109,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
             alt={artwork.title}
             onError={(e) => (e.currentTarget.src = "http://localhost:8000/uploads/default.jpg")}
             className="w-100 mb-3"
-            style={{ maxHeight: "300px", objectFit: "cover" }}
+            style={{ maxHeight: "600px", objectFit: "contain" }}
           />
           {isEditing ? (
             <Form>

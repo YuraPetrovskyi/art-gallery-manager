@@ -11,9 +11,9 @@ CREATE TABLE artworks (
 );
 
 INSERT INTO artworks (title, artist, type, price, availability, imagepath) VALUES
-('Starry Night', 'Vincent van Gogh', 'painting', 1000000, true, 'uploads/1.jpg'),
-('The Thinker', 'Auguste Rodin', 'sculpture', 500000, false, 'uploads/2.jpg'),
-('Mona Lisa', 'Leonardo da Vinci', 'painting', 7500000, true, 'uploads/3.jpg'),
-('The Persistence of Memory', 'Salvador Dali', 'painting', 1200000, false, 'uploads/4.jpg'),
-('The Scream', 'Edvard Munch', 'painting', 950000, true, 'uploads/1.jpg'),
-('David', 'Michelangelo', 'sculpture', 3000000, false, 'uploads/2.jpg');
+('Flowers of the free fields', 'Svitlana Guchenko', 'painting', 428, true, 'uploads/1.jpg'),
+('Night peonies', 'Mykhailo Terebylo', 'painting', 241, false, 'uploads/2.jpg'),
+('Gift of the Gods', 'Oksana Zbrutska', 'painting', 27818, true, 'uploads/3.jpg'),
+('Holy Land', 'Oksana Zbrutska', 'painting', 12518, false, 'uploads/4.jpg'),
+('Just Imagining', 'Yurii Petrovskyi', 'sculpture', 777, false, 'uploads/default.jpg'),
+('Panther', 'Andrii Vasylchenko', 'sculpture', 3616, true, 'uploads/5.jpg');

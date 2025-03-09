@@ -2,6 +2,7 @@ import React from "react";
 import ArtworkList from "./components/ArtworkList";
 import AppNavbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 
 const App: React.FC = () => {
   return (
@@ -10,6 +11,7 @@ const App: React.FC = () => {
       <div className="flex-grow-1">
         <ArtworkList />
       </div>
+      <ScrollToTopButton />
       <Footer />
     </div>
   );

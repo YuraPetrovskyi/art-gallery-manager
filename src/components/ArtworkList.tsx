@@ -83,7 +83,7 @@ const ArtworkList: React.FC = () => {
   });
 
   if (loading) return <Spinner animation="border" className="d-block mx-auto mt-5" />;
-  if (error) return <p className="text-danger">{error}</p>;
+  if (error) return <p className="text-danger text-center  pt-5">{error}</p>;
 
   return (
     <div className="p-4 bg-light h-100">

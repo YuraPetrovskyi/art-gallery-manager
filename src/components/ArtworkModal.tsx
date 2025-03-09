@@ -23,19 +23,14 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
 
-  // const handleSaveChanges = () => {
-  //   const updatedArtwork: Artwork = {
-  //     ...artwork,
-  //     title,
-  //     artist,
-  //     type,
-  //     price: parseFloat(price),
-  //     availability,
-  //   };
-  //   onUpdate(updatedArtwork);
-  //   setIsEditing(false);
-  // };
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setImage(e.target.files[0]);
+    }
+  };
+
 
   const handleSaveChanges = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,19 +48,30 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
       return;
     }
 
-    const updatedArtwork: Artwork = {
-      ...artwork,
-      title,
-      artist,
-      type,
-      price: parseFloat(price),
-      availability,
-    };
-
     try {
       setLoading(true);
-      await axios.put(`${API_URL}/${artwork.id}`, updatedArtwork);
-      onUpdate(updatedArtwork);
+
+      // await axios.put(`${API_URL}/${artwork.id}`, updatedArtwork);
+      // onUpdate(updatedArtwork);
+
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("artist", artist);
+      formData.append("type", type);
+      formData.append("price", String(Number(price)));
+      formData.append("availability", String(availability));
+
+      if (image) {
+        formData.append("image", image);
+      }
+
+      // console.log("sending formData:", [...formData.entries()]);
+
+      const response = await axios.put(`${API_URL}/${artwork.id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      onUpdate(response.data);
       setIsEditing(false);
       setError(null);
     } catch (error) {
@@ -99,7 +105,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
         </Modal.Header>
         <Modal.Body className="bg-light">
           <img
-            src="src/img/3.jpg"
+            src={artwork.imagepath ? `http://localhost:8000/${artwork.imagepath}` : "http://localhost:8000/uploads/default.jpg"}
             alt={artwork.title}
             className="w-100 mb-3"
             style={{ maxHeight: "300px", objectFit: "cover" }}
@@ -139,6 +145,11 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
                   <option value="true">For Sale</option>
                   <option value="false">Exhibition Only</option>
                 </Form.Select>
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Update Image</Form.Label>
+                <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
               </Form.Group>
             </Form>
           ) : (

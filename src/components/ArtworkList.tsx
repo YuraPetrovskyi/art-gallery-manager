@@ -103,6 +103,7 @@ const ArtworkList: React.FC = () => {
                 variant="top"
                 src={artwork.imagepath ? `http://localhost:8000/${artwork.imagepath}` : "http://localhost:8000/uploads/default.jpg"}
                 alt={artwork.title}
+                onError={(e) => (e.currentTarget.src = "http://localhost:8000/uploads/default.jpg")}
                 style={{ height: "200px", objectFit: "cover" }}
               />
               <Card.Body className="p-0 mt-3 d-flex flex-column flex-grow-1">

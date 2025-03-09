@@ -107,6 +107,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
           <img
             src={artwork.imagepath ? `http://localhost:8000/${artwork.imagepath}` : "http://localhost:8000/uploads/default.jpg"}
             alt={artwork.title}
+            onError={(e) => (e.currentTarget.src = "http://localhost:8000/uploads/default.jpg")}
             className="w-100 mb-3"
             style={{ maxHeight: "300px", objectFit: "cover" }}
           />

@@ -17,43 +17,25 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
   const [type, setType] = useState("painting");
   const [price, setPrice] = useState("");
   const [availability, setAvailability] = useState(true);
+  const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
+  const resetForm = () => {
+    setTitle("");
+    setArtist("");
+    setType("painting");
+    setPrice("");
+    setAvailability(true);
+    setImage(null);
+    setError(null);
+  };
 
-  //   if (!title.trim() || title.length > 99) {
-  //     setError("Title is required (max 99 characters).");
-  //     return;
-  //   }
-  //   if (!artist.trim()) {
-  //     setError("Artist name is required.");
-  //     return;
-  //   }
-  //   if (!price || isNaN(Number(price)) || Number(price) <= 0) {
-  //     setError("Price must be a positive number.");
-  //     return;
-  //   }
-
-  //   const newArtwork: Artwork = {
-  //     id: Math.random().toString(36).substr(2, 9),
-  //     title,
-  //     artist,
-  //     type,
-  //     price: parseFloat(price),
-  //     availability,
-  //   };
-
-  //   onAddArtwork(newArtwork);
-  //   setTitle("");
-  //   setArtist("");
-  //   setType("painting");
-  //   setPrice("");
-  //   setAvailability(true);
-  //   setError(null);
-  //   onHide();
-  // };
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setImage(e.target.files[0]);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,13 +53,27 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
       return;
     }
 
-    const newArtwork = { title, artist, type, price: Number(price), availability };
 
     try {
       setLoading(true);
-      const response = await axios.post(API_URL, newArtwork);
+
+      // const response = await axios.post(API_URL, newArtwork);
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("artist", artist);
+      formData.append("type", type);
+      formData.append("price", String(Number(price)));
+      formData.append("availability", String(availability));
+      if (image) {
+        formData.append("image", image);
+      }
+
+      const response = await axios.post(API_URL, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       onAddArtwork(response.data);
-      setError(null);
+      resetForm();
       onHide();
     } catch (error) {
       console.error("Error adding artwork:", error);
@@ -129,6 +125,11 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
             </Form.Select>
           </Form.Group>
 
+          <Form.Group className="mb-3">
+            <Form.Label>Image</Form.Label>
+            <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
+          </Form.Group>
+
           {error && <p className="text-center  text-danger">{error}</p>}
 
           <div className="d-flex justify-content-between">
@@ -136,8 +137,8 @@ const AddArtworkModal: React.FC<AddArtworkModalProps> = ({ show, onHide, onAddAr
               {loading ? <Spinner animation="border" size="sm" /> : "Add Artwork"}
             </Button>
             <Button variant="secondary" onClick={() => {
+              resetForm();
               onHide();
-              setError(null);
             }}>
               Cancel
             </Button>

@@ -101,7 +101,7 @@ const ArtworkList: React.FC = () => {
               <Card.Img
                 className="rounded"
                 variant="top"
-                src="src/img/3.jpg" // Тимчасова заглушка для зображення
+                src={artwork.imagepath ? `http://localhost:8000/${artwork.imagepath}` : "http://localhost:8000/uploads/default.jpg"}
                 alt={artwork.title}
                 style={{ height: "200px", objectFit: "cover" }}
               />

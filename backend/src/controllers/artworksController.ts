@@ -36,18 +36,19 @@ export const addArtwork = async (req: MulterRequest, res: Response): Promise<voi
   const imagepath  = req.file ? req.file.path.replace(/\\/g, "/") : null;
 
   if (!title || title.trim().length === 0 || title.length > 99) {
-    res.status(400).json({ error: "Title is required (max 99 characters)." });
+    res.status(400).json({ error: "Title is required and must be at most 99 characters long." });
     return;
   }
-  if (!artist || artist.trim().length === 0) {
-    res.status(400).json({ error: "Artist name is required." });
+  if (!artist || artist.trim().length === 0 || artist.length > 50) {
+    res.status(400).json({ error: "Artist name is required and must be at most 50 characters long." });
     return;
   }
-  if (!type) {
-    res.status(400).json({ error: "Type is required." });
+  if (!type || typeof type !== "string") {
+    res.status(400).json({ error: "Type is required and must be a string." });
     return;
   }
-  if (!price || isNaN(Number(price)) || Number(price) <= 0) {
+  const numericPrice = Number(price);
+  if (!price || isNaN(numericPrice) || numericPrice <= 0) {
     res.status(400).json({ error: "Price must be a positive number." });
     return;
   }
@@ -72,18 +73,19 @@ export const updateArtwork = async (req: MulterRequest, res: Response): Promise<
   // console.log("Received Data:", { title, artist, type, price, availability, imagepath });
 
   if (!title || title.trim().length === 0 || title.length > 99) {
-    res.status(400).json({ error: "Title is required (max 99 characters)." });
+    res.status(400).json({ error: "Title is required and must be at most 99 characters long." });
     return;
   }
-  if (!artist || artist.trim().length === 0) {
-    res.status(400).json({ error: "Artist name is required." });
+  if (!artist || artist.trim().length === 0 || artist.length > 50) {
+    res.status(400).json({ error: "Artist name is required and must be at most 50 characters long." });
     return;
   }
-  if (!type) {
-    res.status(400).json({ error: "Type is required." });
+  if (!type || typeof type !== "string") {
+    res.status(400).json({ error: "Type is required and must be a string." });
     return;
   }
-  if (!price || isNaN(Number(price)) || Number(price) <= 0) {
+  const numericPrice = Number(price);
+  if (!price || isNaN(numericPrice) || numericPrice <= 0) {
     res.status(400).json({ error: "Price must be a positive number." });
     return;
   }

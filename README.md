@@ -79,6 +79,15 @@ Replace the placeholders with your actual database credentials.
 
 ```sh
 cd backend
+```
+Run the server with **ts-node**:
+
+```sh
+npx ts-node src/server.ts
+```
+or if you want automatic restart on file changes (with **nodemon**):
+
+```sh
 npm run dev
 ```
 

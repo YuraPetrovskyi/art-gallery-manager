@@ -35,12 +35,20 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onHide, onUpdate, 
   const handleSaveChanges = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!title.trim() || title.length > 99) {
-      setError("Title is required (max 99 characters).");
+    if (!title.trim()) {
+      setError("Title is required.");
+      return;
+    }
+    if (title.length > 99) {
+      setError("Title must be less than 99 characters.");
       return;
     }
     if (!artist.trim()) {
       setError("Artist name is required.");
+      return;
+    }
+    if (artist.length > 50) {
+      setError("Artist name cannot exceed 50 characters.");
       return;
     }
     if (!price || isNaN(Number(price)) || Number(price) <= 0) {

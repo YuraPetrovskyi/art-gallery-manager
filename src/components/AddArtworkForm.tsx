@@ -29,6 +29,10 @@ const AddArtworkForm: React.FC<AddArtworkFormProps> = ({ onAddArtwork }) => {
       setError("Artist name cannot be empty.");
       return;
     }
+    if (artist.length > 50) {
+      setError("Artist name cannot exceed 50 characters.");
+      return;
+    }
     if (!price || isNaN(Number(price)) || Number(price) <= 0) {
       setError("Price must be a positive number.");
       return;
@@ -36,7 +40,7 @@ const AddArtworkForm: React.FC<AddArtworkFormProps> = ({ onAddArtwork }) => {
 
     // Створення нового об'єкта
     const newArtwork: Artwork = {
-      id: Math.random().toString(36).substr(2, 9),
+      id: Math.random().toString(36).slice(2, 9),
       title,
       artist,
       type,

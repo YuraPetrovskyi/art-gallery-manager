@@ -2,9 +2,7 @@
 
 Art Gallery Manager is a **full-stack web application** designed to manage artworks in an online gallery. Users can **browse**, **filter**, **add**, **edit**, and **delete** artworks with images, prices, and availability statuses. The application supports image uploads and displays stored artworks in an intuitive and visually appealing layout.
 
-<p align="center">
-  <img src="/img/screenshot.jpg" alt="Application Screenshot" width="400"/>  
-</p>
+![Alt text](src/img/screenshot.jpg)
 
 ## 🛠️ Technologies Used
 

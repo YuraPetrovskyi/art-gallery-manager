@@ -1,14 +1,46 @@
 import { Request, Response } from "express";
 import pool from "../config/db";
 
-// розширює стандартний інтерфейс Request з Express (express.Request), додаючи file, яке містить завантажений файл.
+// розширює стандартний інтерфейс Request з Express (express.Request), додаючи file, який містить завантажений файл.
 interface MulterRequest extends Request {
   file?: Express.Multer.File;
 }
 
 export const getArtworks = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { rows } = await pool.query("SELECT * FROM artworks ORDER BY id ASC");
+    let query = "SELECT * FROM artworks";
+    let conditions: string[] = [];
+    let values: any[] = [];
+
+    const { price, artist, type } = req.query;
+
+    // console.log("Received query parameters:", { price, artist, type });
+
+    // Фільтр за іменем художника
+    if (artist) {
+      conditions.push("LOWER(artist) LIKE LOWER($" + (values.length + 1) + ")");
+      values.push(`%${artist}%`);
+    }
+
+    // Фільтр за типом
+    if (type) {
+      conditions.push("type = $" + (values.length + 1));
+      values.push(type);
+    }
+
+    // Додаємо умови до SQL-запиту
+    if (conditions.length > 0) {
+      query += " WHERE " + conditions.join(" AND ");
+    }
+
+    // Сортування за ціною
+    if (price === "asc" || price === "desc") {
+      query += ` ORDER BY price ${price.toUpperCase()}`;
+    }
+
+    // console.log("Executing query:", query, values);
+
+    const { rows } = await pool.query(query, values);
     res.json(rows);
   } catch (err) {
     console.error(err);

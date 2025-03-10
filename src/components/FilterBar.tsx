@@ -1,20 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 type FilterBarProps = {
-  onFilterChange: (artist: string, type: string) => void;
-  onSortChange: (sortOrder: string) => void; 
+  onFilterChange: (artist: string, type: string, sortOrder: string) => void;
+  artistFilter: string;
+  typeFilter: string;
+  sortOrder: string;
 };
 
-const FilterBar: React.FC<FilterBarProps> = ({ onFilterChange, onSortChange  }) => {
-  const [artistInput, setArtistInput] = useState("");
-  const [typeInput, setTypeInput] = useState("");
+const FilterBar: React.FC<FilterBarProps> = ({  onFilterChange, artistFilter, typeFilter, sortOrder }) => {
+  const [artistInput, setArtistInput] = useState(artistFilter);
+  const [typeInput, setTypeInput] = useState(typeFilter);
+  const [sortOrderInput, setSortOrderInput] = useState(sortOrder);
+
+  const artistInputRef = useRef<HTMLInputElement | null>(null); // Збереження фокусу
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      onFilterChange(artistInput, typeInput);
-    }, 300);
+      onFilterChange(artistInput, typeInput, sortOrderInput);
+    }, 500);
     return () => clearTimeout(timer);
-  }, [artistInput, typeInput, onFilterChange]);
+  }, [artistInput, typeInput, sortOrderInput, onFilterChange]);
+
+  useEffect(() => {
+    if (artistInputRef.current) {
+      artistInputRef.current.focus(); // Повертаємо фокус після оновлення
+    }
+  }, [artistInput]); // Викликаємо, тільки коли оновлюється artistInput
 
   return (
     <div className="d-flex flex-wrap gap-2">
@@ -24,13 +35,14 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFilterChange, onSortChange  }) 
         placeholder="Enter artist name..."
         value={artistInput}
         onChange={(e) => setArtistInput(e.target.value)}
+        ref={artistInputRef} // Прив'язуємо поле введення
         className="p-2 rounded text-secondary text-start w-auto"
       />
 
       {/* Випадаючий список для фільтрування за типом */}
-      <select 
+      <select
         value={typeInput}
-        onChange={(e) => setTypeInput(e.target.value)} 
+        onChange={(e) => setTypeInput(e.target.value)}
         className="p-2 rounded text-secondary text-start w-auto"
       >
         <option value="">All types</option>
@@ -40,14 +52,14 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFilterChange, onSortChange  }) 
       
       {/* Сортування по ціні */}
       <select
-        onChange={(e) => onSortChange(e.target.value)}
+        value={sortOrderInput}
+        onChange={(e) => setSortOrderInput(e.target.value)}
         className="p-2 rounded text-secondary text-start w-auto"
       >
         <option value="">Sort by</option>
         <option value="asc">Price ↑</option>
         <option value="desc">Price ↓</option>
       </select>
-
     </div>
   );
 };

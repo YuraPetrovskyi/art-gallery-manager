@@ -135,24 +135,24 @@ art-gallery-manager/
 │   ├── tsconfig.json       # TypeScript configuration
 │
 │                           # React frontend
-│   ├── node_modules/       # Frontend dependencies
-│   ├── public/             # Static assets
-│   ├── src/                # Source code
-│   │   ├── components/     # UI components
-│   │   ├── data/           # Mock data
-│   │   ├── img/            # Images
-│   │   ├── pages/          # Application pages (future expansion)
-│   │   ├── services/       # API service handlers
-│   │   ├── types/          # TypeScript types
-│   │   ├── utils/          # Utility functions 
-│   │   ├── App.tsx         # Main app component
-│   │   ├── main.tsx        # Renders the React app
-│   │   ├── styles.css      # Global styles
-│   │   ├── vite-env.d.ts   # Vite environment settings
-├── index.html          # Main HTML file
-├── vite.config.ts      # Vite configuration
-├── package.json        # Dependencies & scripts
-├── package-lock.json   # Dependency lock file
+├── node_modules/           # Frontend dependencies
+├── public/                 # Static assets
+├── src/                    # Source code
+│   ├── components/         # UI components
+│   ├── data/               # Mock data
+│   ├── img/                # Images
+│   ├── pages/              # Application pages (future expansion)
+│   ├── services/           # API service handlers
+│   ├── types/              # TypeScript types
+│   ├── utils/              # Utility functions 
+│   ├── App.tsx             # Main app component
+│   ├── main.tsx            # Renders the React app
+│   ├── styles.css          # Global styles
+│   ├── vite-env.d.ts       # Vite environment settings
+├── index.html              # Main HTML file
+├── vite.config.ts          # Vite configuration
+├── package.json            # Dependencies & scripts
+├── package-lock.json       # Dependency lock file
 │── .gitignore              # Git ignored files
 │── eslint.config.js        # ESLint configuration
 │── LICENSE                 # License information

@@ -58,7 +58,7 @@ const ArtworkList: React.FC = () => {
     setSelectedArtwork(updatedArtwork);
   };
 
-  const handleDeleteArtwork = (id: string) => {
+  const handleDeleteArtwork = () => {
     fetchArtworks(); 
     setSelectedArtwork(null);
   };

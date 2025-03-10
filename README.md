@@ -122,7 +122,6 @@ art-gallery-manager/
 │   │   │   ├── upload.ts   # File upload configuration
 │   │   ├── controllers/    # API controllers
 │   │   │   ├── artworksController.ts  # Artworks API logic
-│   │   ├── models/         # Data models (future expansion)
 │   │   ├── routes/         # API routes
 │   │   │   ├── artworks.ts # Artwork routes
 │   │   ├── server.ts       # Main Express server
@@ -139,8 +138,6 @@ art-gallery-manager/
 │   ├── components/         # UI components
 │   ├── data/               # Mock data
 │   ├── img/                # Images
-│   ├── pages/              # Application pages (future expansion)
-│   ├── services/           # API service handlers
 │   ├── types/              # TypeScript types
 │   ├── utils/              # Utility functions 
 │   ├── App.tsx             # Main app component

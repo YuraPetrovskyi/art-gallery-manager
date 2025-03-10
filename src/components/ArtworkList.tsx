@@ -27,7 +27,7 @@ const ArtworkList: React.FC = () => {
       if (typeFilter) params.append("type", typeFilter);
       if (sortOrder) params.append("price", sortOrder);
 
-      console.log("Fetching artworks with:", params.toString());
+      // console.log("Fetching artworks with:", params.toString());
 
       const response = await axios.get(`${API_URL}?${params.toString()}`);
       setArtworks(response.data);
@@ -49,19 +49,17 @@ const ArtworkList: React.FC = () => {
     setSortOrder(sortOrder);
   };
 
-  const handleAddArtwork = (newArtwork: Artwork) => {
-    setArtworks((prevArtworks) => [...prevArtworks, newArtwork]);
+  const handleAddArtwork = () => {
+    fetchArtworks();
   };
 
   const handleUpdateArtwork = (updatedArtwork: Artwork) => {
-    setArtworks((prevArtworks) =>
-      prevArtworks.map((art) => (art.id === updatedArtwork.id ? updatedArtwork : art))
-    );
+    fetchArtworks();
     setSelectedArtwork(updatedArtwork);
   };
 
   const handleDeleteArtwork = (id: string) => {
-    setArtworks((prevArtworks) => prevArtworks.filter((art) => art.id !== id));
+    fetchArtworks(); 
     setSelectedArtwork(null);
   };
 

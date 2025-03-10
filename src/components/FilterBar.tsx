@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { XLg  } from "react-bootstrap-icons"; // Іконка "Х" для очищення
 
 type FilterBarProps = {
   onFilterChange: (artist: string, type: string, sortOrder: string) => void;
@@ -27,17 +28,30 @@ const FilterBar: React.FC<FilterBarProps> = ({  onFilterChange, artistFilter, ty
     }
   }, [artistInput]); // Викликаємо, тільки коли оновлюється artistInput
 
+  const clearArtistFilter = () => {
+    setArtistInput("");
+  };
+
   return (
     <div className="d-flex flex-wrap gap-2">
       {/* Поле пошуку по художнику з debounce */}
-      <input
-        type="text"
-        placeholder="Enter artist name..."
-        value={artistInput}
-        onChange={(e) => setArtistInput(e.target.value)}
-        ref={artistInputRef} // Прив'язуємо поле введення
-        className="p-2 rounded text-secondary text-start w-auto"
-      />
+      <div className="position-relative">
+        <input
+          type="text"
+          placeholder="Enter artist name..."
+          value={artistInput}
+          onChange={(e) => setArtistInput(e.target.value)}
+          className="p-2 rounded text-secondary text-start w-auto pe-4"
+        />
+        {artistInput && (
+          <XLg 
+            className="position-absolute end-0 top-50 translate-middle-y text-muted cursor-pointer me-2"
+            onClick={clearArtistFilter}
+            size={18}
+            role="button"
+          />
+        )}
+      </div>
 
       {/* Випадаючий список для фільтрування за типом */}
       <select
